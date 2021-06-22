@@ -4,15 +4,28 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
-        link(rel="stylesheet", href="/css/login.css")
         link(rel="stylesheet", href="/css/main.css")
+        link(rel="stylesheet", href="/css/login.css")
+        
         title Document
     body
         .wrapper 
             .row 
-                nav.col-2
-                    a(href="/")
+                nav.col-2.nav
+                    a.nav-el.active(href="/")
                         i.fas.fa-dove
+                    a.nav-el(href="/")
+                        i.fas.fa-home
+                    a.nav-el(href="/search")
+                        i.fas.fa-search
+                    a.nav-el(href="/notifications")
+                        i.fas.fa-bell
+                    a.nav-el(href="/messages")
+                        i.fas.fa-envelope
+                    a.nav-el(href="/profile")
+                        i.fas.fa-user
+                    a.nav-el(href="/logout")
+                        i.fas.fa-sign-out-alt
                 .main-container.col-10.col-md-8.col-lg-6
                     block content
                 .d-none.d-md-block.col-md-2.col-lg-4

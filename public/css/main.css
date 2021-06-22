@@ -1,6 +1,33 @@
-nav {
-  background-color: var(--dark);
+:root {
+  --main-blue: rgb(33, 191, 212);
+  --blue: #1fa2f1;
+  --blue-hover: #d4edff;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
 }
 .main-container {
-  background-color: var(--danger);
+  
+}
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.nav-el {
+  padding: 0.8em;
+  font-size: 1.4em;
+}
+.nav-el.active {
+  color: var(--blue);
+}
+.nav-el:hover {
+  background-color: var(--blue-hover);
+  color: var(--blue);
+  border-radius: 50%;
 }
