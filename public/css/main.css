@@ -20,6 +20,9 @@ h1 {
   font-size: 1.4em;
   font-weight: inherit;
 }
+.wrapper-margin {
+  margin: 0;
+}
 .main-container {
   border-left: 1px solid var(--light-gray);
   border-right: 1px solid var(--light-gray);
@@ -55,8 +58,8 @@ h1 {
   flex-shrink: 0;
 }
 .post-pic {
-  width: 4rem;
-  height: 4rem;
+  width: 4em;
+  height: 4em;
   flex-shrink: 0;
 }
 .post-pic img {
@@ -112,7 +115,8 @@ h1 {
 .message-footer {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  height: 3em;
+  /* justify-content: space-around; */
 }
 .message-footer .message-btn {
   cursor: pointer;
@@ -120,11 +124,35 @@ h1 {
 
   color: var(--gray);
 }
-.message-btn:hover {
+.message-btn {
+  flex: 1;
+}
+.message-text {
+  margin: 0.6em 0;
+  word-break: break-word;
+  padding-right: var(--spacing);
+}
+.message-btn svg,
+.message-btn span {
+  pointer-events: none;
+  margin-left: 0.1em;
+}
+.message-btn span {
+  margin-bottom: 0.1em;
+}
+.btn-container {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5em;
+}
+.btn-container:hover {
   background-color: #deedff;
   color: var(--blue);
   border-radius: 50%;
 }
-.like-btn.liked {
-  border: 1px solid red;
+.btn-container.liked {
+  color: red;
+}
+.btn-container:hover.liked {
+  background-color: rgba(252, 15, 15, 0.1);
 }

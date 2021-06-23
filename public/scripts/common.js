@@ -34,6 +34,25 @@ $(document).on('click', '.like-btn', (e) => {
     type: 'PUT',
     success: (postData) => {
       btn.find('span').text(postData.likes.length || '')
+      if (postData.likes.includes(userInfo._id)) btn.addClass('liked')
+      else btn.removeClass('liked')
+    },
+  })
+})
+$(document).on('click', '.retweet-btn', (e) => {
+  let btn = $(e.target)
+  let postId = getPostFromElement(btn)
+
+  if (postId === undefined) return
+
+  $.ajax({
+    url: `/api/posts/${postId}/retweet`,
+    type: 'POST',
+    success: (postData) => {
+      console.log(postData)
+      // btn.find('span').text(postData.likes.length || '')
+      // if (postData.likes.includes(userInfo._id)) btn.addClass('liked')
+      // else btn.removeClass('liked')
     },
   })
 })
@@ -50,9 +69,8 @@ function createPostHtml(postData) {
   if (userInfo._id === undefined) {
     return console.log('User object not populated')
   }
-  let isLiked = postData.likes.includes(userInfo._id)
-  let liked = isLiked ? 'liked' : ''
-  console.log(isLiked)
+  let liked = postData.likes.includes(userInfo._id) ? 'liked' : ''
+
   let displayName = `${userInfo.firstName} ${userInfo.lastName}`
   let timestamp = timeDifference(new Date(), new Date(postData.createdAt))
   return `
@@ -70,11 +88,23 @@ function createPostHtml(postData) {
       </div>
       <div class="message-text">${postData.content}</div>
       <div class="message-footer">
-        <i class='message-btn far fa-comment'></i>
-        <i class='message-btn fas fa-retweet'></i>
-        <div class='${liked} message-btn like-btn>
-          <i class='far fa-heart'></i>
-          <span>${postData.likes.length || ''}</span>
+        <div class='message-btn'>
+          <div class='btn-container'>
+            <i class='far fa-comment'></i>
+            <span>23</span>
+          </div>
+        </div>
+        <div class='message-btn retweet-btn'>
+          <div class='btn-container'>
+            <i class='fas fa-retweet'></i>
+            <span>1</span>
+          </div>
+        </div>
+        <div class='message-btn like-btn'>
+          <div class='btn-container ${liked}'>
+            <i class='far fa-heart'></i>
+            <span>${postData.likes.length || ''}</span>
+          </div>
         </div>
       </div>
     </div>

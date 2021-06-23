@@ -9,8 +9,10 @@ html(lang="en")
         link(rel="stylesheet", href="/css/login.css")
         title Document
     body
+        script.
+            var userInfo = !{userInfoJs}
         .wrapper 
-            .row 
+            .row.wrapper-margin
                 nav.col-2.nav
                     a.nav-el.active(href="/")
                         i.fas.fa-dove
