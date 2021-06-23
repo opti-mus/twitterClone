@@ -1,3 +1,4 @@
+include ../mixins/mixins.pug
 html(lang="en")
     head
         meta(charset="UTF-8")
@@ -6,7 +7,6 @@ html(lang="en")
         link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
         link(rel="stylesheet", href="/css/main.css")
         link(rel="stylesheet", href="/css/login.css")
-        
         title Document
     body
         .wrapper 
@@ -27,8 +27,10 @@ html(lang="en")
                     a.nav-el(href="/logout")
                         i.fas.fa-sign-out-alt
                 .main-container.col-10.col-md-8.col-lg-6
+                    .main-title
+                        h1 #{name}
                     block content
                 .d-none.d-md-block.col-md-2.col-lg-4
-                    span third column 
+                    
                 
     include ../footer.pug

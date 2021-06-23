@@ -2,6 +2,7 @@
   --main-blue: rgb(33, 191, 212);
   --blue: #1fa2f1;
   --blue-hover: #d4edff;
+  --light-gray: rgb(230, 236, 240);
 }
 * {
   margin: 0;
@@ -11,8 +12,14 @@
 a {
   text-decoration: none;
 }
+h1 {
+  font-size: 1.4em;
+  font-weight: inherit;
+}
 .main-container {
-  
+  border-left: 1px solid var(--light-gray);
+  border-right: 1px solid var(--light-gray);
+  padding: 0;
 }
 .nav {
   display: flex;
@@ -22,6 +29,7 @@ a {
 .nav-el {
   padding: 0.8em;
   font-size: 1.4em;
+  color: var(--dark);
 }
 .nav-el.active {
   color: var(--blue);
@@ -29,5 +37,20 @@ a {
 .nav-el:hover {
   background-color: var(--blue-hover);
   color: var(--blue);
+  border-radius: 50%;
+}
+.main-title {
+  padding: 0.7em 1em;
+  border-bottom: 1px solid var(--light-gray);
+  font-weight: 700;
+}
+.post-container {
+  display: flex;
+}
+
+.post-pic img {
+  max-width: 100%;
+  height: auto;
+  width: 5rem;
   border-radius: 50%;
 }

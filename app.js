@@ -35,7 +35,8 @@ app.use('/logout', logoutRoute)
 
 app.get('/', middleware.requireLogin, (req, res, next) => {
   let payload = {
-    name: 'Main',
+    name: 'Home',
+    userInfo: req.session.user,
   }
   res.status(200).render('home', payload)
 })
