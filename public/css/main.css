@@ -1,13 +1,17 @@
 :root {
   --main-blue: rgb(33, 191, 212);
   --blue: #1fa2f1;
+  --blue-light: #9bd1f9;
   --blue-hover: #d4edff;
   --light-gray: rgb(230, 236, 240);
+  --spacing: 0.7em;
+  --greyText: rgb(101, 119, 134);
 }
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  outline: none;
 }
 a {
   text-decoration: none;
@@ -40,17 +44,87 @@ h1 {
   border-radius: 50%;
 }
 .main-title {
-  padding: 0.7em 1em;
+  padding: var(--spacing);
   border-bottom: 1px solid var(--light-gray);
   font-weight: 700;
 }
 .post-container {
   display: flex;
+  border-bottom: 10px solid rgb(230, 236, 240);
+  padding: var(--spacing);
+  flex-shrink: 0;
 }
-
+.post-pic {
+  width: 4rem;
+  height: 4rem;
+  flex-shrink: 0;
+}
 .post-pic img {
   max-width: 100%;
   height: auto;
-  width: 5rem;
   border-radius: 50%;
+  background-color: var(--white);
+}
+.post-text {
+  flex: 1;
+  padding-left: var(--spacing);
+}
+.post-text textarea {
+  width: 100%;
+  border: none;
+  resize: none;
+  font-size: 19px;
+}
+#postSubmit {
+  background-color: var(--blue);
+  border: none;
+  color: var(--white);
+  padding: 0.3em 1em;
+  border-radius: 35px;
+  outline: none;
+}
+#postSubmit:disabled {
+  background-color: var(--blue-light);
+}
+.message {
+  display: flex;
+  border-bottom: 1px solid var(--light-gray);
+  padding: 1em 0;
+  padding-left: var(--spacing);
+}
+.message-content {
+  padding-left: var(--spacing);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.message-name {
+  color: var(--dark);
+  font-weight: 800;
+}
+.message-username {
+  color: var(--greyText);
+}
+.message-username,
+.message-date {
+  padding: var(--spacing);
+}
+.message-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.message-footer .message-btn {
+  cursor: pointer;
+  /* flex: 1; */
+
+  color: var(--gray);
+}
+.message-btn:hover {
+  background-color: #deedff;
+  color: var(--blue);
+  border-radius: 50%;
+}
+.like-btn.liked {
+  border: 1px solid red;
 }
