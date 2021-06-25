@@ -6,3 +6,46 @@ mixin createPostForm(userLoggin)
       textarea#postText(placeholder="What's happening?")
       .post-btns 
         input#postSubmit(type="submit", disabled='' form='.post-text' value="Post" )
+mixin createReplyModal(post) 
+  #replyModal.modal.fade(tabindex='-1', aria-labelledby='replyModalLabel', aria-hidden='true')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5#replyModalLabel.modal-title Reply
+          button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+        .modal-body
+          .retweeted-container
+          .post-container
+            .post-pic
+              img(src=post.profilePic, alt='user image')
+            form.post-text
+              textarea#replyTextarea(placeholder="What's happening?")
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
+          button#replySubmit.btn.btn-primary(type='button' disabled='') Save changes
+
+mixin createDeletePostModal(post) 
+  #deletePostModal.modal.fade(tabindex='-1', aria-labelledby='deletePostModalLabel', aria-hidden='true')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5#deletePostModalLabel.modal-title Reply
+          button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+        .modal-body
+          p You won't be able to delete this?
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
+          button#deletePostSubmit.btn.btn-primary(type='button') Delete
+mixin createPostModals(userLoggedIn)
+  +createReplyModal(userLoggedIn) 
+  +createDeletePostModal() 
+
+mixin createFollowBtn(user,isFollowing) 
+  - text = isFollowing ? 'Following' : 'Follow'
+  - btnClass = isFollowing ? 'follow-btn following' : 'follow-btn'
+  button(class=`${btnClass} profile-btn` , data-user=user._id) #{text}
+
+mixin createTab(name,href,isSelected)
+  - className = isSelected ? 'tab active' : 'tab'
+  a(href=href class=className)
+    span #{name}

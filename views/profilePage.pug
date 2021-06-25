@@ -1,0 +1,44 @@
+extends layouts/main-layout.pug
+
+block content 
+    if !profileUser
+      h3 Check url
+    else
+      script. 
+        var profileUserId = '!{profileUser._id}'
+        var selectedTab = '!{selectedTab}'
+      .profile 
+        .profile-header 
+          .profile-cover 
+            .profile-imgContainer
+              img(src=profileUser.profilePic, alt="")
+          .profile-btns 
+            if profileUser._id != userInfo._id
+              a.profile-btn(href=`/messages/${profileUser._id}`)
+                i.fas.fa-envelope
+              - let profileUserId = profileUser._id.toString()  
+              - if(userInfo.following && userInfo.following.includes(profileUserId))
+                +createFollowBtn(profileUser,true)
+              - else 
+                +createFollowBtn(profileUser,false)
+              
+          .profile-details
+            span.profile-name #{profileUser.firstName} #{profileUser.lastName}
+            span.profile-username @#{profileUser.username}
+            span.profile-description #{profileUser.description}
+
+            .profile-followers
+              a(href=`/profile/${profileUser.username}/following`)
+                span.value #{profileUser.following.length}
+                span Following
+              a(href=`/profile/${profileUser.username}/followers`)
+                span.value.followers-value #{profileUser.followers.length}
+                span Followers  
+        .profile-tabs 
+          +createTab('Posts',`/profile/${profileUser.username}`,selectedTab != 'replies')
+          +createTab('Replies',`/profile/${profileUser.username}/replies`,selectedTab == 'replies')
+        .profile-posts
+      +createPostModals(userInfo)
+    
+block scripts 
+    script(src="/scripts/profile.js") 

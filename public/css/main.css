@@ -1,6 +1,6 @@
 :root {
   --main-blue: rgb(33, 191, 212);
-  --blue: #1fa2f1;
+  --blue: rgb(31, 162, 241);
   --blue-light: #9bd1f9;
   --blue-hover: #d4edff;
   --light-gray: rgb(230, 236, 240);
@@ -58,8 +58,8 @@ h1 {
   flex-shrink: 0;
 }
 .post-pic {
-  width: 4em;
-  height: 4em;
+  width: 3.5em;
+  height: 3.5em;
   flex-shrink: 0;
 }
 .post-pic img {
@@ -90,10 +90,21 @@ h1 {
   background-color: var(--blue-light);
 }
 .message {
-  display: flex;
   border-bottom: 1px solid var(--light-gray);
   padding: 1em 0;
   padding-left: var(--spacing);
+}
+.message.large-font .message-text,
+.message.large-font .message-footer {
+  font-size: 1.3em;
+}
+.message-wrapper {
+  display: flex;
+}
+.retweet-container {
+  font-size: 0.9em;
+  margin-left: 4em;
+  color: var(--gray);
 }
 .message-content {
   padding-left: var(--spacing);
@@ -132,8 +143,8 @@ h1 {
   word-break: break-word;
   padding-right: var(--spacing);
 }
-.message-btn svg,
-.message-btn span {
+.btn-container svg,
+.btn-container span {
   pointer-events: none;
   margin-left: 0.1em;
 }
@@ -144,6 +155,8 @@ h1 {
   display: inline-flex;
   align-items: center;
   padding: 0.5em;
+  border: none;
+  background-color: transparent;
 }
 .btn-container:hover {
   background-color: #deedff;
@@ -153,6 +166,116 @@ h1 {
 .btn-container.liked {
   color: red;
 }
+.btn-container.retweet {
+  color: green;
+}
 .btn-container:hover.liked {
   background-color: rgba(252, 15, 15, 0.1);
+}
+.btn-container:hover.retweet {
+  background-color: rgba(15, 252, 66, 0.1);
+}
+.reply-flag {
+  color: var(--greyText);
+  font-size: 0.9em;
+}
+
+/* Profile */
+
+.profile {
+}
+.profile-cover {
+  background-color: var(--blue);
+  height: 15em;
+  position: relative;
+}
+.profile-imgContainer {
+  width: 9em;
+  height: 9em;
+  position: absolute;
+  bottom: 0;
+  transform: translateY(50%);
+  margin-left: var(--spacing);
+}
+
+.profile-imgContainer img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  border: 4px solid #fff;
+}
+.profile-btns {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 61px;
+}
+.profile-btn {
+  padding: 0.4em 1.3em;
+  display: inline-flex;
+  border: 1px solid;
+  border-radius: 2em;
+  margin: var(--spacing);
+  color: var(--blue);
+  background-color: transparent;
+  font-weight: bold;
+
+  align-items: center;
+  justify-content: center;
+}
+.profile-btn:hover {
+  background-color: var(--blue-hover);
+}
+.follow-btn.following {
+  background-color: var(--blue);
+  color: #fff;
+}
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  margin: var(--spacing);
+}
+.profile-name {
+  font-weight: bold;
+}
+.profile-username {
+  color: var(--greyText);
+}
+.profile-followers a {
+  color: var(--dark);
+}
+.profile-followers a:hover {
+  text-decoration: underline;
+}
+.profile-followers .value {
+  font-weight: bold;
+  margin-right: 3px;
+}
+.profile-followers span:not(.value) {
+  color: var(--greyText);
+  margin-right: 3px;
+}
+.profile-tabs {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--light-gray);
+}
+.profile-tabs .tab {
+  flex: 1;
+  text-align: center;
+  padding: var(--spacing);
+  font-weight: bold;
+  color: var(--greyText);
+}
+.profile-tabs .tab.active {
+  border-bottom: 2px solid var(--blue);
+}
+.profile-tabs .tab:hover {
+  background-color: rgba(31, 162, 241, 0.2);
+  color: var(--blue);
+}
+/* Modal */
+
+.modal-body .post-container {
+  border: none;
+  padding: 0;
 }

@@ -1,8 +1,9 @@
 extends layouts/main-layout.pug
 
 block content 
-    +createPostForm(userInfo)
+    script. 
+        var postId = '!{postId}'
     .post-wrapper 
     +createPostModals(userInfo)
 block scripts 
-    script(src="/scripts/home.js") 
+    script(src="/scripts/postPage.js") 
