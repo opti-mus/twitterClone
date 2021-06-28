@@ -1,7 +1,6 @@
 $(document).ready(() => {
-  $.get('/api/posts', (result) => {
+  $.get('/api/posts', { followingOnly: true }, (result) => {
+    console.log(result)
     outputPost(result, $('.post-wrapper'))
   })
 })
-
-

@@ -57,6 +57,22 @@ h1 {
   padding: var(--spacing);
   flex-shrink: 0;
 }
+.message-header {
+  display: flex;
+  align-items: center;
+}
+.message-header #delete-btn {
+  flex: 1;
+  text-align: right;
+  display: block;
+  margin-right: var(--spacing);
+  padding: 0.5em;
+  border: none;
+  background-color: transparent;
+}
+#delete-btn svg {
+  pointer-events: none;
+}
 .post-pic {
   width: 3.5em;
   height: 3.5em;
@@ -272,6 +288,24 @@ h1 {
 .profile-tabs .tab:hover {
   background-color: rgba(31, 162, 241, 0.2);
   color: var(--blue);
+}
+.user {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--light-gray);
+  padding: var(--spacing);
+}
+
+.user .user-title {
+  margin-left: var(--spacing);
+  flex: 1;
+}
+.user .user-title a {
+  color: var(--dark);
+  font-weight: bold;
+}
+.user .user-username {
+  color: var(--greyText);
 }
 /* Modal */
 

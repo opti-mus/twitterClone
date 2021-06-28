@@ -26,10 +26,16 @@ router.get('/:username/replies', async (req, res, next) => {
   payload.selectedTab = 'replies'
   res.status(200).render('profilePage', payload)
 })
-router.get('/:username/following', async (req, res, next) => {
+router.get('/:username/followings', async (req, res, next) => {
   let username = req.params.username
   let payload = await getPayload(username, req.session.user)
-  console.log(payload)
+  payload.selectedTab = 'followings'
+  res.status(200).render('followersAndFollowing.pug', payload)
+})
+router.get('/:username/followers', async (req, res, next) => {
+  let username = req.params.username
+  let payload = await getPayload(username, req.session.user)
+  payload.selectedTab = 'followers'
   res.status(200).render('followersAndFollowing.pug', payload)
 })
 async function getPayload(username, userLoggedIn) {

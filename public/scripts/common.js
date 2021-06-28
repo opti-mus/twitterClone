@@ -12,17 +12,7 @@ $('#postText, #replyTextarea').keyup((e) => {
   }
   postBtn.prop('disabled', false)
 })
-// $('#postSubmit').click((e) => {
-//   let btn = e.target
-//   let textbox = $('#postText')
-//   let data = {
-//     content: textbox.val(),
-//   }
-//   $.post('/api/posts', data, (postData, status, xhr) => {
-//     let postHtml = createPostHtml(postData)
-//     $('.post-wrapper').prepend(postHtml)
-//   })
-// })
+
 $('#postSubmit, #replySubmit').click((e) => {
   let btn = $(e.target)
 
@@ -64,10 +54,6 @@ $('#deletePostModal').on('show.bs.modal', (e) => {
   let postId = getPostFromElement(btn)
 
   $('#deletePostSubmit').data('id', postId)
-
-  // $.get(`/api/posts/${postId}`, (result) => {
-  //   outputPost(result.postData, $('.retweeted-container'))
-  // })
 })
 $('#deletePostSubmit').click(function () {
   let postId = $(this).data('id')
@@ -143,7 +129,7 @@ $(document).on('click', '.follow-btn', (e) => {
       } else {
         btn.removeClass('following')
         btn.text('Follow')
-        difference=-1
+        difference = -1
       }
       let followersLabel = $('.followers-value')
       console.log(followersLabel.length)
@@ -165,7 +151,7 @@ function getPostFromElement(elem) {
 function createPostHtml(postData, largeFont = false) {
   if (postData == null) return alert('postdata is null')
 
-  let isRetweet = postData.retweetData !== undefined
+  let isRetweet = postData.retweetData != undefined
   let retweetedBy = isRetweet ? postData.postedBy.username : null
   postData = isRetweet ? postData.retweetData : postData
   let postedBy = postData.postedBy
@@ -199,11 +185,11 @@ function createPostHtml(postData, largeFont = false) {
       Replying to <a href='/profile/${replyToUsername}'>@${replyToUsername}</a>
     </span>`
   }
-
+  console.log(postData.postedBy._id, userInfo._id)
   let button = ''
   if (postData.postedBy._id == userInfo._id) {
     button = `
-    <button class='btn-container' id='delete-btn' data-id=${postData._id} data-bs-toggle="modal"  data-bs-target='#deletePostModal'>
+    <button  id='delete-btn' data-id=${postData._id} data-bs-toggle="modal"  data-bs-target='#deletePostModal'>
       <i class='fas fa-times'></i>
     </button>`
   }
@@ -220,12 +206,12 @@ function createPostHtml(postData, largeFont = false) {
         <img src='${userInfo.profilePic}' >
       </div>
       <div class="message-content">
-        <div class='pos-header'>
+        <div class='message-header'>
           <a class='message-name' href ='/profile/${postedBy.username}'>
-          ${displayName}
+            ${displayName}
           </a>
-          <spam class='message-username'>@${postedBy.username}</span>
-          <spam class='message-date'>${timestamp}</span>
+          <span class='message-username'>@${postedBy.username}</span>
+          <span class='message-date'>${timestamp}</span>
           ${button}
         </div>
         ${replyFlag}

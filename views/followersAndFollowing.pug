@@ -1,10 +1,18 @@
 extends layouts/main-layout.pug
 
 block content 
-  .profile-tabs
-    +createTab('Followers',`/profile/${userId}/followers`,true)
-    +createTab('Followings',`/profile/${userId}/followings`,false)
-  .post-wrapper 
-    +createPostModals(userInfo)
+    if !profileUser
+      h3 Check url
+    else
+      script. 
+        var profileUserId = '!{profileUser._id}'
+        var selectedTab = '!{selectedTab}'
+        
+      .profile-tabs
+        +createTab('Followers',`/profile/${profileUser.id}/followers`,selectedTab == 'followers')
+        +createTab('Followings',`/profile/${profileUser.id}/followings`,selectedTab != 'followers')
+      .post-wrapper 
+        
 block scripts 
+  script(src="/scripts/followersAndFollowings.js") 
     

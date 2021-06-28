@@ -37,12 +37,27 @@ router.put('/:userId/follow', async (req, res, next) => {
 
   res.status(200).send(req.session.user)
 })
-// router.get('/:userId/following', async (req, res, next) => {
-//   let userId = req.params.userId
-//   let user = await User.findById(userId)
-
-
-//   res.status(200).send(user)
-// })
+router.get('/:userId/followings', async (req, res, next) => {
+  let userId = req.params.userId
+  let user = await User.findById(userId)
+    .populate('following')
+    .then((result) => {
+      res.status(200).send(result)
+    })
+    .catch((err) => {
+      res.sendStatus(400)
+    })
+})
+router.get('/:userId/followers', async (req, res, next) => {
+  let userId = req.params.userId
+  let user = await User.findById(userId)
+    .populate('followers')
+    .then((result) => {
+      res.status(200).send(result)
+    })
+    .catch((err) => {
+      res.sendStatus(400)
+    })
+})
 
 module.exports = router

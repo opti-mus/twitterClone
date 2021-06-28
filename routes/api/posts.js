@@ -14,7 +14,20 @@ router.get('/', async (req, res, next) => {
     searchObj.replyTo = { $exists: isReply }
     delete searchObj.isReply
   }
+  if (searchObj.followingOnly !== undefined) {
+    let followingOnly = searchObj.followingOnly == 'true'
+    let objectsId = []
+    if (followingOnly) {
+      req.session.user.following.forEach(user=>{
+        objectsId.push(user)
+      })
+      objectsId.push(req.session.user._id)
+      searchObj.postedBy = { $in: objectsId }
+    }
+    delete searchObj.followingOnly
+  }
   let result = await getPosts(searchObj)
+
   res.status(200).send(result)
 })
 router.get('/:id', async (req, res, next) => {
@@ -96,7 +109,7 @@ router.post('/:id/retweet', async (req, res, next) => {
     console.log(err)
     res.sendStatus(400)
   })
-  // let isLiked = likes && likes.includes(postId)
+
   let option = deletedPost != null ? '$pull' : '$addToSet'
   let repost = deletedPost
 
@@ -108,7 +121,7 @@ router.post('/:id/retweet', async (req, res, next) => {
       }
     )
   }
-  // Insert user like
+
   req.session.user = await User.findByIdAndUpdate(
     userId,
     {
@@ -119,7 +132,7 @@ router.post('/:id/retweet', async (req, res, next) => {
     console.log(err)
     res.sendStatus(400)
   })
-  // Insert post like
+
   let post = await Post.findByIdAndUpdate(
     postId,
     {

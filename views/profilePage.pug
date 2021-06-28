@@ -28,7 +28,7 @@ block content
             span.profile-description #{profileUser.description}
 
             .profile-followers
-              a(href=`/profile/${profileUser.username}/following`)
+              a(href=`/profile/${profileUser.username}/followings`)
                 span.value #{profileUser.following.length}
                 span Following
               a(href=`/profile/${profileUser.username}/followers`)
