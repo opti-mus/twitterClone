@@ -10,14 +10,16 @@ function loadPosts() {
   })
   $.get(
     '/api/posts',
-    { postedBy: profileUserId, isReply: false },
+    { postedBy: profileUserId, isReply: false, pinned: false },
     (result) => {
       outputPost(result, $('.profile-posts'))
+      // Added pinned:false
     }
   )
 }
 function loadReplies() {
   $.get('/api/posts', { postedBy: profileUserId, isReply: true }, (result) => {
+    console.log(result)
     outputPost(result, $('.profile-posts'))
   })
 }

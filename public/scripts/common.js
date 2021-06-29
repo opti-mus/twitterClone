@@ -202,9 +202,14 @@ $('#user-search-textbox').keydown((e) => {
   clearTimeout(timer)
   var textbox = $(e.target)
   var value = textbox.val()
+  console.log(e)
 
-  if (value == '' && e.keycode == 8) {
+  if (value == '' && (e.which == 8 || e.keyCode == 8)) {
     // remove user from selectrion
+    selectedUsers.pop()
+    unpdateSelectedUserHtml()
+    $('.results-wrapper').html('')
+    if (!selectedUsers.length) $('#create-chat-btn').prop('disabled', true)
     return
   }
 
@@ -337,13 +342,16 @@ function createPostHtml(postData, largeFont = false) {
 
   let buttons = ''
   let pinPostText = ''
+  // Мое исправление
+  if (postData.pinned) {
+    pinPostText = `<span class='pinned-text'><i class='fas fa-thumbtack'></i><span>Pinned post</span></span>`
+  }
   if (postData.postedBy._id == userInfo._id) {
     let pinClass = ''
     let dataTarget = '#confirmPinModal'
     if (postData.pinned === true) {
       pinClass = 'active'
       dataTarget = '#unpinModal'
-      pinPostText = `<span class='pinned-text'><i class='fas fa-thumbtack'></i><span>Pinned post</span></span>`
     }
     buttons = `
     <div class='post-options'>
@@ -358,7 +366,7 @@ function createPostHtml(postData, largeFont = false) {
   }
 
   let largeFontClass = largeFont ? 'large-font' : ''
-  console.log(postData)
+
   return `
   <div class="message ${largeFontClass}" data-id=${postData._id}>
     <div class='retweet-container'>
@@ -505,8 +513,13 @@ function outputSelectableUsers(results, container) {
   if (!results.length)
     container.append(`<span class='no-results'>Nothing to show</span>`)
   results.forEach((res) => {
-    if (res._id == userInfo._id) return
-    let html = createUserHtml(res, true)
+    if (
+      res._id == userInfo._id ||
+      selectedUsers.some((u) => u._id == res._id)
+    ) {
+      return
+    }
+    let html = createUserHtml(res, false)
     let element = $(html)
     element.click(() => userSelected(res))
     container.append(element)
@@ -514,7 +527,19 @@ function outputSelectableUsers(results, container) {
 }
 function userSelected(user) {
   selectedUsers.push(user)
+  unpdateSelectedUserHtml()
   $('#user-search-textbox').val('').focus()
   $('.results-wrapper').html('')
   $('#create-chat-btn').prop('disabled', false)
+}
+function unpdateSelectedUserHtml() {
+  let elements = []
+
+  selectedUsers.forEach((user) => {
+    var name = user.firstName + ' ' + user.lastName
+    var userElement = $(`<span class='selectedUser'>${name}</name>`)
+    elements.push(userElement)
+  })
+  $('.selectedUser').remove()
+  $('#selected-user').prepend(elements)
 }

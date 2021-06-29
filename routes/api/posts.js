@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 router.get('/', async (req, res, next) => {
   let searchObj = req.query
-  if (searchObj.isReply !== undefined) {
+  if (searchObj.isReply != undefined) {
     let isReply = searchObj.isReply == 'true'
     searchObj.replyTo = { $exists: isReply }
     delete searchObj.isReply

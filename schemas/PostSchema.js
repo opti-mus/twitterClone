@@ -33,7 +33,11 @@ const PostSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Post',
     },
-    pinned: Boolean,
+    pinned: {
+      type: Boolean,
+      default: false,
+    },
+    // Поставил дэфолт false пину
   },
   { timestamps: true }
 )

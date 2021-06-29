@@ -402,7 +402,7 @@ h1 {
   margin-left: var(--spacing);
 }
 .chat-title #selected-user input {
-  width: 100%;
+  max-width: 100%;
   border: none;
 }
 .chat-container #create-chat-btn {
@@ -411,4 +411,16 @@ h1 {
   border-radius: 30px;
   background-color: var(--light-gray);
   padding: var(--spacing);
+}
+#selected-user {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.selectedUser {
+  margin-right: calc(var(--spacing)/2);
+  margin-bottom: calc(var(--spacing)/2);
+  background-color: var(--blue-light);
+  border-radius: 4px;
+  padding: 0.3rem;
 }
