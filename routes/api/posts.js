@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
     let followingOnly = searchObj.followingOnly == 'true'
     let objectsId = []
     if (followingOnly) {
-      req.session.user.following.forEach(user=>{
+      req.session.user.following.forEach((user) => {
         objectsId.push(user)
       })
       objectsId.push(req.session.user._id)
@@ -113,13 +113,15 @@ router.post('/:id/retweet', async (req, res, next) => {
   let option = deletedPost != null ? '$pull' : '$addToSet'
   let repost = deletedPost
 
-  if (repost === null) {
-    repost = await Post.create({ postedBy: userId, retweetData: postId }).catch(
-      (err) => {
-        console.log(err)
-        res.sendStatus(400)
-      }
-    )
+  if (repost == null) {
+    repost = await Post.create({
+      postedBy: userId,
+      retweetData: postId,
+    }).catch((err) => {
+      console.log(err)
+      res.sendStatus(400)
+    })
+    console.log(repost)
   }
 
   req.session.user = await User.findByIdAndUpdate(
@@ -146,16 +148,21 @@ router.post('/:id/retweet', async (req, res, next) => {
 
   res.status(200).send(post)
 })
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
   let postId = req.params.id
+  // My changes \ retweet delete error
   Post.findByIdAndDelete(postId)
-    .then(() => {
+    .then((deleted) => {
+      if (!deleted.retweetData) {
+        Post.findOneAndDelete({
+          retweetData: postId,
+        })
+          .then(() => res.sendStatus(202))
+          .catch(() => res.sendStatus(400))
+      }
       res.sendStatus(202)
     })
-    .catch((err) => {
-      console.log(err)
-      res.sendStatus(400)
-    })
+    .catch(() => res.sendStatus(400))
 })
 module.exports = router
 

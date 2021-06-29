@@ -11,6 +11,8 @@ block content
         .profile-header 
           .profile-cover 
             .profile-imgContainer
+              i.fas.fa-camera.profile-camera
+              input#upload-img(type="file", name="")
               img(src=profileUser.profilePic, alt="")
           .profile-btns 
             if profileUser._id != userInfo._id

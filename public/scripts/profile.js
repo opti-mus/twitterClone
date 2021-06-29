@@ -2,6 +2,12 @@ $(document).ready(() => {
   $('.profile-posts').html('')
   if (selectedTab === 'replies') loadReplies()
   else loadPosts()
+  $('.profile-camera').click(() => {
+    $('#upload-img').click()
+    $('#upload-img').on('change', (e) => {
+      console.log(e.target.value)
+    })
+  })
 })
 
 function loadPosts() {

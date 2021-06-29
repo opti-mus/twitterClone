@@ -15,6 +15,8 @@ function loadFollowers() {
   })
 }
 function outputUser(results, container) {
+  if (!results.length)
+    container.append(`<span class='no-results'>Nothing to show</span>`)
   results.forEach((res) => {
     let html = createUserHtml(res, true)
     container.append(html)
@@ -24,9 +26,9 @@ function createUserHtml(userData, showFollowButton = false) {
   let isFollowing =
     userInfo.following && userInfo.following.includes(userData._id)
   let text = isFollowing ? 'Following' : 'Follow'
-  console.log(userInfo._id, userData._id)
+
   let btnClass = isFollowing ? 'follow-btn following' : 'follow-btn'
-  console.log(userData)
+
   let followBtn = ''
   if (showFollowButton && userInfo._id != userData._id) {
     followBtn = `

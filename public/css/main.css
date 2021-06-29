@@ -58,17 +58,21 @@ h1 {
   flex-shrink: 0;
 }
 .message-header {
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
+  position: relative;
 }
 .message-header #delete-btn {
-  flex: 1;
+  /* flex: 1;
   text-align: right;
   display: block;
-  margin-right: var(--spacing);
+  margin-right: var(--spacing); */
   padding: 0.5em;
   border: none;
   background-color: transparent;
+  position: absolute;
+  right: var(--spacing);
+  top: 0;
 }
 #delete-btn svg {
   pointer-events: none;
@@ -195,7 +199,10 @@ h1 {
   color: var(--greyText);
   font-size: 0.9em;
 }
-
+.no-results {
+  padding: var(--spacing);
+  display: block;
+}
 /* Profile */
 
 .profile {
@@ -219,6 +226,21 @@ h1 {
   height: auto;
   border-radius: 50%;
   border: 4px solid #fff;
+}
+.profile-camera {
+  position: absolute;
+  font-size: 4em;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  cursor: pointer;
+}
+#upload-img {
+  display: none;
+}
+.profile-imgContainer:hover > .profile-camera {
+  display: block;
 }
 .profile-btns {
   display: flex;
@@ -311,5 +333,4 @@ h1 {
 
 .modal-body .post-container {
   border: none;
-  padding: 0;
 }

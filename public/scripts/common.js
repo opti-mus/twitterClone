@@ -32,6 +32,7 @@ $('#postSubmit, #replySubmit').click((e) => {
       location.reload()
     } else {
       let postHtml = createPostHtml(postData)
+      $('.no-results').remove()
       $('.post-wrapper').prepend(postHtml)
       textbox.val('')
       btn.prop('disabled', true)
@@ -75,7 +76,7 @@ $(document).on('click', '.like-btn', (e) => {
   let btn = $(e.target)
   let postId = getPostFromElement(btn)
 
-  if (postId === undefined) return
+  if (postId == undefined) return
 
   $.ajax({
     url: `/api/posts/${postId}/like`,
@@ -91,7 +92,7 @@ $(document).on('click', '.retweet-btn', (e) => {
   let btn = $(e.target)
   let postId = getPostFromElement(btn)
 
-  if (postId === undefined) return
+  if (postId == undefined) return
 
   $.ajax({
     url: `/api/posts/${postId}/retweet`,
@@ -107,7 +108,7 @@ $(document).on('click', '.message', (e) => {
   let element = $(e.target)
   let postId = getPostFromElement(element)
 
-  if (postId !== undefined && !element.is('button')) {
+  if (postId != undefined && !element.is('button')) {
     window.location.href = `/posts/${postId}`
   }
 })
@@ -132,7 +133,7 @@ $(document).on('click', '.follow-btn', (e) => {
         difference = -1
       }
       let followersLabel = $('.followers-value')
-      console.log(followersLabel.length)
+
       if (followersLabel.length) {
         let followersText = followersLabel.text()
         followersLabel.text(+followersText + difference)
@@ -149,19 +150,20 @@ function getPostFromElement(elem) {
   else return postId
 }
 function createPostHtml(postData, largeFont = false) {
-  if (postData == null) return alert('postdata is null')
+  if (postData == null) {
+    return alert('postdata is null')
+  }
 
   let isRetweet = postData.retweetData != undefined
   let retweetedBy = isRetweet ? postData.postedBy.username : null
   postData = isRetweet ? postData.retweetData : postData
   let postedBy = postData.postedBy
 
-  if (postedBy._id === undefined)
-    return console.log('User object not populated')
+  if (postedBy._id == undefined) return console.log('User object not populated')
 
   let liked = postData.likes.includes(userInfo._id) ? 'liked' : ''
 
-  let retweet = postData.retweetUsers.includes(postedBy._id) ? 'retweet' : ''
+  let retweet = postData.retweetUsers.includes(userInfo._id) ? 'retweet' : ''
   let retweetText = ''
   if (isRetweet) {
     retweetText = `<span>
@@ -185,7 +187,7 @@ function createPostHtml(postData, largeFont = false) {
       Replying to <a href='/profile/${replyToUsername}'>@${replyToUsername}</a>
     </span>`
   }
-  console.log(postData.postedBy._id, userInfo._id)
+
   let button = ''
   if (postData.postedBy._id == userInfo._id) {
     button = `
@@ -195,7 +197,7 @@ function createPostHtml(postData, largeFont = false) {
   }
 
   let largeFontClass = largeFont ? 'large-font' : ''
-
+  console.log(postData)
   return `
   <div class="message ${largeFontClass}" data-id=${postData._id}>
     <div class='retweet-container'>
