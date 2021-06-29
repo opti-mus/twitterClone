@@ -9,11 +9,20 @@ block content
         var selectedTab = '!{selectedTab}'
       .profile 
         .profile-header 
-          .profile-cover 
+          .profile-cover
+            .profile-cover-container
+              if profileUser.coverPhoto 
+                img.profile-coverPhoto(src=profileUser.coverPhoto, alt="")
+              if profileUser._id == userInfo._id
+                .profile-cover-wrapper
+                  button.profile-cover-btn(type='button' data-bs-toggle='modal' data-bs-target='#uploadCoverModal')
+                    i.fas.fa-camera 
             .profile-imgContainer
-              i.fas.fa-camera.profile-camera
-              input#upload-img(type="file", name="")
-              img(src=profileUser.profilePic, alt="")
+              img(src=profileUser.profilePic, alt="" )
+              if profileUser._id == userInfo._id
+                .profile-img-wrapper
+                  button.profile-camera(type='button' data-bs-toggle='modal' data-bs-target='#uploadImageModal') 
+                    i.fas.fa-camera
           .profile-btns 
             if profileUser._id != userInfo._id
               a.profile-btn(href=`/messages/${profileUser._id}`)
@@ -39,8 +48,11 @@ block content
         .profile-tabs 
           +createTab('Posts',`/profile/${profileUser.username}`,selectedTab != 'replies')
           +createTab('Replies',`/profile/${profileUser.username}/replies`,selectedTab == 'replies')
+        .pin-post-container
         .profile-posts
       +createPostModals(userInfo)
+      +createUploadImageModal()
+      +createUploadCoverModal()
     
 block scripts 
     script(src="/scripts/profile.js") 

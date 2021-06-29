@@ -1,0 +1,10 @@
+extends layouts/main-layout.pug
+
+block content 
+  .chat-container 
+    .chat-title 
+      label(for='user-search-textbox') To: 
+      #selected-user 
+        input#user-search-textbox(type="text", placeholder='Type the of the person')
+    .results-wrapper 
+    button#create-chat-btn(disabled='') Create chat

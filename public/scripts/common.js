@@ -1,3 +1,6 @@
+var cropper
+var timer
+var selectedUsers = []
 $('#postText, #replyTextarea').keyup((e) => {
   let textbox = $(e.target)
   let value = textbox.val().trim()
@@ -69,6 +72,150 @@ $('#deletePostSubmit').click(function () {
       location.reload()
     },
   })
+})
+$('#confirmPinModal').on('show.bs.modal', (e) => {
+  let btn = $(e.relatedTarget)
+  let postId = getPostFromElement(btn)
+
+  $('#confirmPinSubmit').data('id', postId)
+})
+
+$('#unpinModal').on('show.bs.modal', (e) => {
+  let btn = $(e.relatedTarget)
+  let postId = getPostFromElement(btn)
+
+  $('#unpinModalSubmit').data('id', postId)
+})
+$('#unpinModalSubmit').click(function () {
+  let postId = $(this).data('id')
+  $.ajax({
+    url: `/api/posts/${postId}`,
+    type: 'PUT',
+    data: { pinned: false },
+    success: (data, status, xhr) => {
+      if (xhr.status != 204) {
+        alert('could not pinned post')
+        return
+      }
+      location.reload()
+    },
+  })
+})
+$('#confirmPinSubmit').click(function () {
+  let postId = $(this).data('id')
+  $.ajax({
+    url: `/api/posts/${postId}`,
+    type: 'PUT',
+    data: { pinned: true },
+    success: (data, status, xhr) => {
+      if (xhr.status != 204) {
+        alert('could not pinned post')
+        return
+      }
+      location.reload()
+    },
+  })
+})
+$('#upload-img').on('change', (e) => {
+  let input = e.target
+  if (input.files && input.files[0]) {
+    let reader = new FileReader()
+    reader.onload = (e) => {
+      let image = document.querySelector('#image-preview')
+      image.src = e.target.result
+
+      if (cropper != undefined) {
+        cropper.destroy()
+      }
+      cropper = new Cropper(image, {
+        aspectRatio: 1 / 1,
+        background: false,
+      })
+    }
+    reader.readAsDataURL(input.files[0])
+  } else console.log('nope')
+})
+$('#upload-cover').on('change', (e) => {
+  let input = e.target
+  if (input.files && input.files[0]) {
+    let reader = new FileReader()
+    reader.onload = (e) => {
+      let image = document.querySelector('#cover-preview')
+      image.src = e.target.result
+
+      if (cropper != undefined) {
+        cropper.destroy()
+      }
+      cropper = new Cropper(image, {
+        aspectRatio: 16 / 9,
+        background: false,
+      })
+    }
+    reader.readAsDataURL(input.files[0])
+  } else console.log('nope')
+})
+$('#uploadImageSubmit').click(() => {
+  let canvas = cropper.getCroppedCanvas()
+  if (canvas == null) {
+    alert('alrt')
+    return
+  }
+  canvas.toBlob((blob) => {
+    let formData = new FormData()
+    formData.append('croppedImage', blob)
+
+    $.ajax({
+      url: '/api/users/profilePicture',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: () => {
+        location.reload()
+      },
+    })
+  })
+})
+$('#uploadICoverSubmit').click(() => {
+  let canvas = cropper.getCroppedCanvas()
+  if (canvas == null) {
+    alert('alrt')
+    return
+  }
+  canvas.toBlob((blob) => {
+    let formData = new FormData()
+    formData.append('croppedImage', blob)
+
+    $.ajax({
+      url: '/api/users/coverPhoto',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: () => {
+        location.reload()
+      },
+    })
+  })
+})
+$('#user-search-textbox').keydown((e) => {
+  clearTimeout(timer)
+  var textbox = $(e.target)
+  var value = textbox.val()
+
+  if (value == '' && e.keycode == 8) {
+    // remove user from selectrion
+    return
+  }
+
+  timer = setTimeout(() => {
+    value = textbox.val().trim()
+    if (value == '') {
+      $('.results-wrapper').html('')
+    } else {
+      searchUsers(value)
+    }
+  }, 1000)
 })
 $('#replyModal').on('hidden.bs.modal', () => $('.retweeted-container').html(''))
 
@@ -188,12 +335,26 @@ function createPostHtml(postData, largeFont = false) {
     </span>`
   }
 
-  let button = ''
+  let buttons = ''
+  let pinPostText = ''
   if (postData.postedBy._id == userInfo._id) {
-    button = `
-    <button  id='delete-btn' data-id=${postData._id} data-bs-toggle="modal"  data-bs-target='#deletePostModal'>
-      <i class='fas fa-times'></i>
-    </button>`
+    let pinClass = ''
+    let dataTarget = '#confirmPinModal'
+    if (postData.pinned === true) {
+      pinClass = 'active'
+      dataTarget = '#unpinModal'
+      pinPostText = `<span class='pinned-text'><i class='fas fa-thumbtack'></i><span>Pinned post</span></span>`
+    }
+    buttons = `
+    <div class='post-options'>
+      <button  class='opt-container ${pinClass}' data-id=${postData._id} data-bs-toggle="modal"  data-bs-target='${dataTarget}'>
+        <i class='fas fa-thumbtack'></i>
+      </button>
+      <button class='opt-container' id='delete-btn'  data-id=${postData._id} data-bs-toggle="modal"  data-bs-target='#deletePostModal'>
+        <i class='fas fa-times'></i>
+      </button>
+    </div>
+    `
   }
 
   let largeFontClass = largeFont ? 'large-font' : ''
@@ -202,19 +363,21 @@ function createPostHtml(postData, largeFont = false) {
   <div class="message ${largeFontClass}" data-id=${postData._id}>
     <div class='retweet-container'>
       ${retweetText}
+      
     </div>
     <div class='message-wrapper'>
       <div class="post-pic">
-        <img src='${userInfo.profilePic}' >
+        <img src='${postedBy.profilePic}' >
       </div>
       <div class="message-content">
+        ${pinPostText}
         <div class='message-header'>
           <a class='message-name' href ='/profile/${postedBy.username}'>
             ${displayName}
           </a>
           <span class='message-username'>@${postedBy.username}</span>
           <span class='message-date'>${timestamp}</span>
-          ${button}
+          ${buttons}
         </div>
         ${replyFlag}
         <div class="message-text">${postData.content}</div>
@@ -278,10 +441,11 @@ function outputPost(results, container) {
     container.append(`<span class='no-results'>Nothing to show</span>`)
   }
 }
+
 function outputPostWithReplies(results, container) {
   container.html('')
 
-  if (results.replyTo !== undefined && results.replyTo._id !== undefined) {
+  if (results.replyTo != undefined && results.replyTo._id != undefined) {
     let html = createPostHtml(results.replyTo)
     container.append(html)
   }
@@ -292,4 +456,65 @@ function outputPostWithReplies(results, container) {
     let html = createPostHtml(res)
     container.append(html)
   })
+}
+function outputUser(results, container) {
+  container.html('')
+  if (!results.length)
+    container.append(`<span class='no-results'>Nothing to show</span>`)
+  results.forEach((res) => {
+    let html = createUserHtml(res, true)
+    container.append(html)
+  })
+}
+function createUserHtml(userData, showFollowButton = false) {
+  let isFollowing =
+    userInfo.following && userInfo.following.includes(userData._id)
+  let text = isFollowing ? 'Following' : 'Follow'
+
+  let btnClass = isFollowing ? 'follow-btn following' : 'follow-btn'
+
+  let followBtn = ''
+  if (showFollowButton && userInfo._id != userData._id) {
+    followBtn = `
+    <button class='${btnClass} profile-btn' data-user=${userData._id}>${text}</button>
+    `
+  }
+  return `
+    <div class='user'>
+      <div class='user-image post-pic'>
+        <img src='${userData.profilePic}' >
+      </div>
+      <div class='user-title'>
+        <a href='/profile/${userData._id}'>
+          ${userData.firstName} ${userData.lastName} 
+        </a>
+        <span class='user-username'>@${userData.username}</span>
+      </div>
+      ${followBtn}
+    </div>
+  `
+}
+function searchUsers(searchTerm) {
+  $.get('/api/users', { search: searchTerm }, (results) => {
+    outputSelectableUsers(results, $('.results-wrapper'))
+  })
+}
+function outputSelectableUsers(results, container) {
+  container.html('')
+  console.log(userInfo)
+  if (!results.length)
+    container.append(`<span class='no-results'>Nothing to show</span>`)
+  results.forEach((res) => {
+    if (res._id == userInfo._id) return
+    let html = createUserHtml(res, true)
+    let element = $(html)
+    element.click(() => userSelected(res))
+    container.append(element)
+  })
+}
+function userSelected(user) {
+  selectedUsers.push(user)
+  $('#user-search-textbox').val('').focus()
+  $('.results-wrapper').html('')
+  $('#create-chat-btn').prop('disabled', false)
 }

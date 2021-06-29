@@ -2,21 +2,34 @@ $(document).ready(() => {
   $('.profile-posts').html('')
   if (selectedTab === 'replies') loadReplies()
   else loadPosts()
-  $('.profile-camera').click(() => {
-    $('#upload-img').click()
-    $('#upload-img').on('change', (e) => {
-      console.log(e.target.value)
-    })
-  })
 })
 
 function loadPosts() {
-  $.get('/api/posts', { postedBy: profileUserId, isReply: false }, (result) => {
-    outputPost(result, $('.profile-posts'))
+  $.get('/api/posts', { postedBy: profileUserId, pinned: true }, (result) => {
+    outputPinnedPost(result, $('.pin-post-container'))
   })
+  $.get(
+    '/api/posts',
+    { postedBy: profileUserId, isReply: false },
+    (result) => {
+      outputPost(result, $('.profile-posts'))
+    }
+  )
 }
 function loadReplies() {
   $.get('/api/posts', { postedBy: profileUserId, isReply: true }, (result) => {
     outputPost(result, $('.profile-posts'))
+  })
+}
+function outputPinnedPost(results, container) {
+  if (results.length == 0) {
+    container.hide()
+    return
+  }
+  container.html('')
+
+  results.forEach((res) => {
+    let html = createPostHtml(res)
+    container.append(html)
   })
 }

@@ -14,6 +14,10 @@ router.get('/', async (req, res, next) => {
     searchObj.replyTo = { $exists: isReply }
     delete searchObj.isReply
   }
+  if (searchObj.search != undefined) {
+    searchObj.content = { $regex: searchObj.search, $options: 'i' }
+    delete searchObj.search
+  }
   if (searchObj.followingOnly !== undefined) {
     let followingOnly = searchObj.followingOnly == 'true'
     let objectsId = []
@@ -162,6 +166,22 @@ router.delete('/:id', async (req, res, next) => {
       }
       res.sendStatus(202)
     })
+    .catch(() => res.sendStatus(400))
+})
+router.put('/:id', async (req, res, next) => {
+  let postId = req.params.id
+  console.log(req.body)
+  if (req.body.pinned != undefined) {
+    await Post.updateMany(
+      { postedBy: req.session.user },
+      { pinned: false }
+    ).catch((err) => {
+      console.log(err)
+      res.sendStatus(400)
+    })
+  }
+  Post.findByIdAndUpdate(postId, req.body)
+    .then(() => res.sendStatus(204))
     .catch(() => res.sendStatus(400))
 })
 module.exports = router
