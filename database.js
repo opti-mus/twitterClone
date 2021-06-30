@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 mongoose.set('useNewUrlParser', true)
 mongoose.set('useUnifiedTopology', true)
 mongoose.set('useFindAndModify', false)
-
+// last change
+mongoose.set('useCreateIndex', true)
 class Datababse {
   constructor() {
     this.connect()
@@ -14,7 +15,7 @@ class Datababse {
       )
       .then(() => {
         console.log('DB connect succesful!')
-      })  
+      })
       .catch((err) => {
         console.log('Db connecton error' + err)
       })

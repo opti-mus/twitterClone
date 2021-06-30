@@ -568,3 +568,11 @@ function getOtherChatUsers(users) {
   if (users.length == 1) return users
   return users.filter((user) => user._id != userInfo._id)
 }
+
+function messageReceived(newMessage) {
+  if($('.chat-main-wrapper').length ==0) {
+
+  }else {
+    addChatMessageHtml(newMessage)
+  }
+}
