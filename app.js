@@ -39,6 +39,8 @@ const messagesRoutes = require('./routes/messagesRoutes')
 // Api routes
 const postApiRoutes = require('./routes/api/posts')
 const usersApiRoutes = require('./routes/api/users')
+const chatsApiRoutes = require('./routes/api/chats')
+const messagesApiRoutes = require('./routes/api/messages')
 
 app.use('/login', loginRoute)
 app.use('/register', registerRoute)
@@ -51,6 +53,8 @@ app.use('/messages', middleware.requireLogin, messagesRoutes)
 
 app.use('/api/posts', postApiRoutes)
 app.use('/api/users', usersApiRoutes)
+app.use('/api/chats', chatsApiRoutes)
+app.use('/api/messages', messagesApiRoutes)
 
 app.get('/', middleware.requireLogin, (req, res, next) => {
   let payload = {

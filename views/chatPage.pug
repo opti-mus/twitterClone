@@ -1,0 +1,24 @@
+extends layouts/main-layout.pug
+
+block content 
+    if errorMessage 
+      span.error-message #{errorMessage}
+    else 
+      script. 
+        var chatId = '!{chat._id}'
+      .chat-wrapper
+        .chat-title-container 
+          +createChatImage(chat,userInfo)
+          span#chat-name(data-bs-toggle='modal' data-bs-target='#chatNameModal') #{chat.chatName}
+        .chat-main-container
+          .loading-container 
+            img(src="/images/Spinner.gif", alt="")
+          .chat-main-wrapper(style='visibility: hidden')
+            ul.chat-main 
+            .footer 
+              textarea.message-input(name="chatInput",placeholder='Type a message...') 
+              button.send-message.opt-container
+                i.fas.fa-paper-plane
+      +createChatNameModal(chat)
+block scripts 
+    script(src="/scripts/chatPage.js") 

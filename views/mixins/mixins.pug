@@ -88,7 +88,38 @@ mixin createUnpinPostModal()
         .modal-footer
           button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
           button#unpinModalSubmit.btn.btn-primary(type='button') Unpin
-          
+mixin createChatNameModal(chat) 
+  #chatNameModal.modal.fade(tabindex='-1', aria-labelledby='chatNameModalLabel', aria-hidden='true')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5#chatNameModalLabel.modal-title Change name chat?
+          button.btn-close(type='button', data-bs-dismiss='modal', aria-label='Close')
+        .modal-body
+          input#chat-name-textbox(type="text", placeholder='Enter a name for this chat' value=chat.chatName)
+        .modal-footer
+          button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
+          button#chatNameModalSubmit.btn.btn-primary(type='button') Save
+
+mixin createChatImage(chatData,userLoggedIn)
+  if !chatData
+    return
+  - var i = 0 
+  - var maxImagesToShow = 2 
+  - var remainingUsers = chatData.users.length - maxImagesToShow
+  - remainingUsers-- // remove 1 since we wont show your own image
+
+  .chat-image-container
+    if remainingUsers > 0
+      .user-count 
+        .span +#{remainingUsers}
+    each user in chatData.users 
+      if chatData.users.length != 1 && user._id == userLoggedIn._id 
+        - continue
+      else if i >= maxImagesToShow
+        - break 
+      img(src=user.profilePic, alt="User profile pic" title=user.firstName)
+      - i++
 mixin createPostModals(userLoggedIn)
   +createReplyModal(userLoggedIn) 
   +createDeletePostModal() 

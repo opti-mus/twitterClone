@@ -9,20 +9,20 @@ const ChatSchema = new Schema(
       trim: true,
     },
     isGroupChat: {
-      type: Bollean,
+      type: Boolean,
       default: false,
     },
     users: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Users',
+        ref: 'User',
       },
     ],
-    latestMessage: {type: Schema.Types.ObjectId, ref: 'Message'}
+    latestMessage: { type: Schema.Types.ObjectId, ref: 'Message' },
   },
   { timestamps: true }
 )
 
-var Chat = mongoose.model('Chat', UserSchema)
+var Chat = mongoose.model('Chat', ChatSchema)
 
 module.exports = Chat
