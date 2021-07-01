@@ -1,6 +1,10 @@
 var cropper
 var timer
 var selectedUsers = []
+$(document).ready(() => {
+  refreshMessagesBadge()
+  refreshNotificationsBadge()
+})
 $('#postText, #replyTextarea').keyup((e) => {
   let textbox = $(e.target)
   let value = textbox.val().trim()
@@ -302,6 +306,14 @@ $(document).on('click', '.follow-btn', (e) => {
     },
   })
 })
+$(document).on('click', '.notification.active', (e) => {
+  var container = $(e.target)
+  var notificationId = container.data().id
+  var href = container.attr('href')
+  e.preventDefault()
+  var callback = () => (window.location = href)
+  markNotificationAsOpened(notificationId, callback)
+})
 function getPostFromElement(elem) {
   let isRoot = elem.hasClass('message')
   let rootElement = isRoot ? elem : elem.closest('.message')
@@ -402,7 +414,7 @@ function createPostHtml(postData, largeFont = false) {
           <div class='message-btn'>
             <button class='btn-container' data-bs-toggle="modal"  data-bs-target='#replyModal'>
               <i class='far fa-comment'></i>
-              <span>23</span>
+                  <span>23</span>
             </button>
           </div>
           <div class='message-btn retweet-btn'>
@@ -570,9 +582,45 @@ function getOtherChatUsers(users) {
 }
 
 function messageReceived(newMessage) {
-  if($('.chat-main-wrapper').length ==0) {
-
-  }else {
+  if ($('.chat-main-wrapper').length == 0) {
+  } else {
     addChatMessageHtml(newMessage)
   }
+  refreshMessagesBadge()
+}
+
+function markNotificationAsOpened(notificationId = null, callback = null) {
+  if (callback == null) callback = () => location.reload()
+
+  var url =
+    notificationId != null
+      ? `/api/notifications/${notificationId}/markAsOpened`
+      : `/api/notifications/markAsOpened`
+  $.ajax({
+    url,
+    type: 'PUT',
+    success: () => callback(),
+  })
+}
+
+function refreshMessagesBadge() {
+  $.get('/api/chats/', { unreadOnly: true }, (data) => {
+    var numResults = data.length
+    if (numResults > 0) {
+      $('#messages-badge').text(numResults).addClass('active')
+    } else {
+      $('#messages-badge').text('').removeClass('active')
+    }
+  })
+}
+
+function refreshNotificationsBadge() {
+  $.get('/api/notifications', { unreadOnly: true }, (data) => {
+    var numResults = data.length
+    if (numResults > 0) {
+      $('#notification-badge').text(numResults).addClass('active')
+    } else {
+      $('#notification-badge').text('').removeClass('active')
+    }
+  })
 }

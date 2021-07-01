@@ -36,12 +36,14 @@ const profileRoute = require('./routes/profileRoutes')
 const uploadRoutes = require('./routes/uploadRoutes')
 const searchRoutes = require('./routes/searchRoutes')
 const messagesRoutes = require('./routes/messagesRoutes')
+const notificationsPage = require('./routes/notificationsRoutes')
 
 // Api routes
 const postApiRoutes = require('./routes/api/posts')
 const usersApiRoutes = require('./routes/api/users')
 const chatsApiRoutes = require('./routes/api/chats')
 const messagesApiRoutes = require('./routes/api/messages')
+const notificationApiRoutes = require('./routes/api/notifications')
 
 app.use('/login', loginRoute)
 app.use('/register', registerRoute)
@@ -51,11 +53,13 @@ app.use('/profile', middleware.requireLogin, profileRoute)
 app.use('/uploads', uploadRoutes)
 app.use('/search', middleware.requireLogin, searchRoutes)
 app.use('/messages', middleware.requireLogin, messagesRoutes)
+app.use('/notifications', middleware.requireLogin, notificationsPage)
 
 app.use('/api/posts', postApiRoutes)
 app.use('/api/users', usersApiRoutes)
 app.use('/api/chats', chatsApiRoutes)
 app.use('/api/messages', messagesApiRoutes)
+app.use('/api/notifications', notificationApiRoutes)
 
 app.get('/', middleware.requireLogin, (req, res, next) => {
   let payload = {
@@ -85,11 +89,11 @@ io.on('connection', (socket) => {
     if (!chat) {
       return console.log('chat user is not defined')
     }
-    chat.users.forEach(user=>{
-      if(user._id == newMessage.sender._id) {
+    chat.users.forEach((user) => {
+      if (user._id == newMessage.sender._id) {
         return
       }
-      socket.in(user._id).emit('message received',newMessage)
+      socket.in(user._id).emit('message received', newMessage)
     })
   })
 })

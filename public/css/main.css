@@ -59,9 +59,31 @@ h1 {
   padding: 0.8em;
   font-size: 1.4em;
   color: var(--dark);
+  position: relative;
 }
 .nav-el.active {
   color: var(--blue);
+}
+#notification-badge,
+#messages-badge {
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  display: block;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  border-radius: 50%;
+  font-size: 0.7em;
+  text-align: center;
+  line-height: 20px;
+  color: #fff;
+  font-weight: 500;
+  visibility: hidden;
+}
+#notification-badge.active,
+#messages-badge.active {
+  visibility: visible;
 }
 .nav-el:hover {
   background-color: var(--blue-hover);
@@ -674,4 +696,11 @@ h1 {
 }
 .message-item.last {
   margin-bottom: 10px;
+}
+/* notification */
+.notification.active {
+  background-color: var(--blue-hover);
+}
+.notification * {
+  pointer-events: none;
 }

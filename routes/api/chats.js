@@ -20,6 +20,11 @@ router.get('/', async (req, res, next) => {
     .populate('latestMessage')
     .sort({ updatedAt: -1 })
     .then(async (results) => {
+      if (req.query.unreadOnly != undefined && req.query.unreadOnly == 'true') {
+        results = results.filter(
+          (r) => !r.latestMessage.readBy.includes(req.session.user._id)
+        )
+      }
       results = await User.populate(results, { path: 'latestMessage.sender' })
       res.status(200).send(results)
     })
@@ -75,6 +80,7 @@ router.post('/', async (req, res, next) => {
     .then((results) => res.status(200).send(results))
     .catch((err) => res.sendStatus(400))
 })
+
 router.put('/:chatId', async (req, res, next) => {
   Chat.findByIdAndUpdate(req.params.chatId, req.body)
     .then(() => res.sendStatus(204))

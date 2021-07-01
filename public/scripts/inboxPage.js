@@ -18,7 +18,7 @@ function outputChatList(chatList, container) {
 }
 function createChatHtml(chatData) {
   var chatName = getChatName(chatData)
-  var image = getChatImageElem(chatData) // todo
+  var image = getChatImageElem(chatData) 
   var latestMessage = getLatestMessage(chatData.latestMessage)
   return `
     <a class='results-chatlist ' href='/messages/${chatData._id}'>
