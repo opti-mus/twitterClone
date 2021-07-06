@@ -48,7 +48,7 @@ router.get('/:chatId', async (req, res, next) => {
   if (chat == null) {
     //  Check if chat id really use id
     var userFound = await User.findById(chatId)
-    console.log(userFound)
+    
     if (userFound != null) {
       // payload.errorMessage = ''
       chat = await getChatByUserId(userFound._id, userId)

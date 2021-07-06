@@ -13,12 +13,12 @@ block content
         .chat-main-container
           .loading-container 
             img(src="/images/Spinner.gif", alt="")
-          .chat-main-wrapper(style='visibility: hidden')
+          .chat-main-wrapper(style='visibility: hidden', data-room=chat._id)
             ul.chat-main 
             .typing-dots
               img(src='/images/dots.gif' alt='Typing dots')
             .footer 
-              textarea.message-input(name="chatInput",placeholder='Type a message...') 
+              textarea.message-input(name="chatInput", placeholder='Type a message...' value='') 
               button.send-message.opt-container
                 i.fas.fa-paper-plane
       +createChatNameModal(chat)

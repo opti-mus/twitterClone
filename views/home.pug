@@ -2,7 +2,9 @@ extends layouts/main-layout.pug
 
 block content 
     +createPostForm(userInfo)
-    .post-wrapper 
+    .loading-container 
+        img(src="/images/Spinner.gif", alt="")
+    .post-wrapper.main 
     +createPostModals(userInfo)
 block scripts 
     script(src="/scripts/home.js") 

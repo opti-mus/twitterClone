@@ -19,7 +19,7 @@ function loadPosts() {
 }
 function loadReplies() {
   $.get('/api/posts', { postedBy: profileUserId, isReply: true }, (result) => {
-    console.log(result)
+    
     outputPost(result, $('.profile-posts'))
   })
 }

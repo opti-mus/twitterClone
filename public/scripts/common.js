@@ -207,7 +207,6 @@ $('#create-chat-btn').click(() => {
   var data = JSON.stringify(selectedUsers)
 
   $.post('/api/chats', { users: data }, (chat) => {
-    console.log(chat)
     if (!chat || !chat._id) return alert('invalid response from server')
     window.location.href = `/messages/${chat._id}`
   })
@@ -216,7 +215,6 @@ $('#user-search-textbox').keydown((e) => {
   clearTimeout(timer)
   var textbox = $(e.target)
   var value = textbox.val()
-  console.log(e)
 
   if (value == '' && (e.which == 8 || e.keyCode == 8)) {
     // remove user from selectrion
@@ -297,7 +295,6 @@ $(document).on('click', '.follow-btn', (e) => {
       if (data.following && data.following.includes(userId)) {
         btn.addClass('following')
         btn.text('Following')
-        console.log('ok')
         emitNotification(userId)
       } else {
         btn.removeClass('following')
@@ -421,7 +418,7 @@ function createPostHtml(postData, largeFont = false) {
           <div class='message-btn'>
             <button class='btn-container' data-bs-toggle="modal"  data-bs-target='#replyModal'>
               <i class='far fa-comment'></i>
-                  <span>23</span>
+                  <span></span>
             </button>
           </div>
           <div class='message-btn retweet-btn'>
@@ -537,7 +534,6 @@ function searchUsers(searchTerm) {
 }
 function outputSelectableUsers(results, container) {
   container.html('')
-  console.log(userInfo)
   if (!results.length)
     container.append(`<span class='no-results'>Nothing to show</span>`)
   results.forEach((res) => {
@@ -589,7 +585,7 @@ function getOtherChatUsers(users) {
 }
 
 function messageReceived(newMessage) {
-  if ($('.chat-main-wrapper').length == 0) {
+  if ($(`[data-room='${newMessage.chat._id}']`).length == 0) {
     showMessagePopup(newMessage)
   } else {
     addChatMessageHtml(newMessage)
@@ -712,8 +708,14 @@ function createChatHtml(chatData) {
   var chatName = getChatName(chatData)
   var image = getChatImageElem(chatData)
   var latestMessage = getLatestMessage(chatData.latestMessage)
+
+  var activeClass =
+    !chatData.latestMessage ||
+    chatData.latestMessage.readBy.includes(userInfo._id)
+      ? ''
+      : 'active'
   return `
-    <a class='results-chatlist ' href='/messages/${chatData._id}'>
+    <a class='results-chatlist ${activeClass}' href='/messages/${chatData._id} '>
       ${image}
       <div class='results-datail ellipsis'>
         <span class=''>${chatName}</span>
@@ -730,7 +732,7 @@ function getLatestMessage(latestMessage) {
   return 'New chat'
 }
 function getChatImageElem(chatData) {
-  console.log(chatData)
+
   let otherChatUsers = getOtherChatUsers(chatData.users)
   let groupChatClass = ''
   let chatImage = getUserChatImageElem(otherChatUsers[0])

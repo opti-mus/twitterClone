@@ -49,6 +49,7 @@ h1 {
   /* change */
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .nav {
   display: flex;
@@ -63,6 +64,9 @@ h1 {
 }
 .nav-el.active {
   color: var(--blue);
+}
+.post-wrapper.main {
+  visibility: hidden;
 }
 #notification-badge,
 #messages-badge {
@@ -421,13 +425,21 @@ h1 {
 .user .user-username {
   color: var(--greyText);
 }
-.search-bar-container i {
+.search-bar-container {
+  position: relative;
+}
+.search-bar-container .search-btn {
   position: absolute;
-  left: 0;
+  left: 6px;
+  bottom: 15px;
 }
 #search-box {
+  padding: var(--spacing) 1.8em;
   width: 100%;
   position: relative;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--light-gray);
 }
 /* Modal */
 
@@ -560,7 +572,7 @@ h1 {
 }
 .loading-container {
   position: absolute;
-  top: 10%;
+  top: 15%;
   right: 50%;
   transform: translate(50%, 50%);
 }
@@ -698,7 +710,8 @@ h1 {
   margin-bottom: 10px;
 }
 /* notification */
-.notification.active {
+.notification.active,
+.results-chatlist.active {
   background-color: var(--blue-hover);
 }
 .notification * {
@@ -708,11 +721,14 @@ h1 {
   position: fixed;
   top: 7px;
   right: 7px;
-  align-items: center;
-  font-size: 0.9em;
+
   background-color: #fff;
   box-shadow: 0 0 10px rgb(0 0 0 / 30%);
 }
 #notificationList .active {
   background-color: #fff;
+}
+#notificationList .notification {
+  align-items: center;
+  font-size: 0.9em;
 }

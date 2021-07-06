@@ -145,7 +145,7 @@ router.post('/:id/retweet', async (req, res, next) => {
       console.log(err)
       res.sendStatus(400)
     })
-    console.log(repost)
+    
   }
 
   req.session.user = await User.findByIdAndUpdate(
@@ -199,7 +199,7 @@ router.delete('/:id', async (req, res, next) => {
 })
 router.put('/:id', async (req, res, next) => {
   let postId = req.params.id
-  console.log(req.body)
+  
   if (req.body.pinned != undefined) {
     await Post.updateMany(
       { postedBy: req.session.user },

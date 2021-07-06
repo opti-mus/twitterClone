@@ -25,9 +25,10 @@ $(document).ready(() => {
     var messagesHtml = messages.join('')
     addMessagesHtmlToPage(messagesHtml)
     scrollToBottom(false)
-
+    markAllMessagesAsRead()
     $('.loading-container').remove()
     $('.chat-main-wrapper').css('visibility', 'visible')
+    $('.message-input').val('')
   })
 })
 $('#chatNameModalSubmit').click((e) => {
@@ -81,7 +82,7 @@ function messageSubmited() {
     sendMessage(content)
     $('.message-input').val('')
     socket.emit('stop typing', chatId)
-    typing =  false
+    typing = false
   }
 }
 function sendMessage(content) {
@@ -92,8 +93,8 @@ function sendMessage(content) {
       return
     }
     addChatMessageHtml(data)
-    if(connected) {
-      socket.emit('new message',data)
+    if (connected) {
+      socket.emit('new message', data)
     }
   })
 }
@@ -162,4 +163,13 @@ function scrollToBottom(animated) {
   } else {
     container.scrollTop(scrollHeight)
   }
+}
+function markAllMessagesAsRead() {
+  $.ajax({
+    url: `/api/chats/${chatId}/messages/markAsRead`,
+    type: 'PUT',
+    success: () => {
+      refreshMessagesBadge()
+    },
+  })
 }

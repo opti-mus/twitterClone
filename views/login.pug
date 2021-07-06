@@ -6,7 +6,7 @@ block content
             h1 Login 
             form.login-form(method="post") 
                 p.error-form #{errorMessage}
-                input(type="text", name="logUsername", placeholder="Username or email",value='user' required="")
-                input(type="password", name="logPassword", placeholder="Password", value='123' required="")
+                input(type="text", name="logUsername", placeholder="Username or email",value='' required="")
+                input(type="password", name="logPassword", placeholder="Password", value='' required="")
                 input(type="submit", value="Login")
             a(href="/register") Need an account? Register here.
