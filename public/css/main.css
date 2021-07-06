@@ -704,3 +704,15 @@ h1 {
 .notification * {
   pointer-events: none;
 }
+#notificationList {
+  position: fixed;
+  top: 7px;
+  right: 7px;
+  align-items: center;
+  font-size: 0.9em;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+}
+#notificationList .active {
+  background-color: #fff;
+}

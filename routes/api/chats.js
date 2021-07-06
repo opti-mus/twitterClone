@@ -9,6 +9,7 @@ const Message = require('../../schemas/MessageSchema')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 router.get('/', async (req, res, next) => {
+  // return res.sendStatus(200)
   Chat.find({
     users: {
       $elemMatch: {
