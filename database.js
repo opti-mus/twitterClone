@@ -11,7 +11,7 @@ class Datababse {
   connect() {
     mongoose
       .connect(
-        'mongodb+srv://admin:admin@twitterclonecluster.6nz8a.mongodb.net/twitterCloneDB?retryWrites=true&w=majority'
+        'mongodb+srv://admin:admin@twitterclonecluster.6nz8a.mongodb.net/?retryWrites=true&w=majority',
       )
       .then(() => {
         console.log('DB connect succesful!')
